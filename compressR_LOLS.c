@@ -55,8 +55,22 @@ int main(int argc, char ** argv) {
   }
 
   // determine the size of the file
-  fseek(fp, 0, SEEK_END);
+  fseek(fp, -1, SEEK_END);
   long int size = ftell(fp);
+  fclose(fp);
+
+
+  if (split > size) {
+    split = size;
+    answer = 0;
+    printf("There are only %ld characters in %s, so only %ld files will be made.  Do you wish to continue? (y/n): ", size, argv[1], size);
+    while(answer != 'y') {
+      fscanf(stdin, "%c", &answer);
+      if (answer == 'n') {
+	return 0;
+      }
+    }
+  }
 
 
   long int begin = 0;           // the begining of the section to be given to a worker
@@ -66,22 +80,11 @@ int main(int argc, char ** argv) {
   long int temp;                // storage variable
   pid_t workers[split];         // to store the childrens' pids
   int wk_num = 0;               // stores worker number
-  char c = 0;                   // a storage variable for testing
 
   int roundup = size - end*split;  // to keep track of how many times we must round up
   if (roundup) { end++; roundup--; }
 
   while (begin < size) {
-    fseek(fp, end-1, SEEK_SET);
-    // make sure end is not in the middle of a compressable sequence
-    c = fgetc(fp);
-    while (fgetc(fp) == c && c != EOF) { end++; }
-
-    if (c == EOF) { break; }
-
-    if (wk_num == split-1) {
-      end = size;
-    }
 
     // format the name of the compressed file
     if (split > 1) {
@@ -107,12 +110,6 @@ int main(int argc, char ** argv) {
 
   }
 
-  // Report if the arrangement or number of characters in the files results in fewer files than requested
-  if (wk_num < split) {
-    printf("Due to the arrangement and number of characters in %s, only %d compressed files where made\n", argv[1], wk_num + 1);
-  }
-
-  fclose(fp);
 
   int status;
   pid_t pid;
