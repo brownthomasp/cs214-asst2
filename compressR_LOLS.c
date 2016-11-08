@@ -27,17 +27,16 @@ int main(int argc, char ** argv) {
     return -1;
   }
   
-  // char[] out will be the name of the compressed files
-  char out[strlen(argv[1]) + 7];
-  sprintf(out, "%s_LOLS", argv[1]);
-
-  int arg_size = strlen(argv[1]);
-  out[arg_size - 4] = '_';
+  // char out[] will be the name of the compressed files
+  char out[strlen(argv[1]) + 10];
+  char file_name[strlen(argv[1]) + 6];
+  sprintf(file_name, "%s_LOLS", argv[1]);
+  file_name[strlen(argv[1]) - 4] = '_';
 
   if (split > 1) {
-    arg_size += 5;
-    out[arg_size] = '0';
-    out[arg_size+1] = '\0';
+    sprintf(out,"%s%d", file_name, 0);
+  } else {
+    sprintf(out, "%s", file_name);
   }
 
   // check for an already existing compressed version of the file that would be writen over
@@ -69,11 +68,16 @@ int main(int argc, char ** argv) {
   int wk_num = 0;               // stores worker number
   char c = 0;                   // a storage variable for testing
 
+  int roundup = size - end*split;  // to keep track of how many times we must round up
+  if (roundup) { end++; roundup--; }
+
   while (begin < size) {
     fseek(fp, end-1, SEEK_SET);
     // make sure end is not in the middle of a compressable sequence
     c = fgetc(fp);
-    while (fgetc(fp) == c) { end++; }
+    while (fgetc(fp) == c && c != EOF) { end++; }
+
+    if (c == EOF) { break; }
 
     if (wk_num == split-1) {
       end = size;
@@ -81,7 +85,7 @@ int main(int argc, char ** argv) {
 
     // format the name of the compressed file
     if (split > 1) {
-      out[arg_size] = wk_num + '0';
+      sprintf(out, "%s%d", file_name, wk_num);
     }
     
     workers[wk_num] = fork();
@@ -98,18 +102,24 @@ int main(int argc, char ** argv) {
     end += size/split;
     begin = temp;
 
+    if (roundup) { end++; roundup--; }
     wk_num++;
 
+  }
+
+  // Report if the arrangement or number of characters in the files results in fewer files than requested
+  if (wk_num < split) {
+    printf("Due to the arrangement and number of characters in %s, only %d compressed files where made\n", argv[1], wk_num + 1);
   }
 
   fclose(fp);
 
   int status;
   pid_t pid;
-  while (split) {
+  while (wk_num) {
     pid =  wait(&status);
     printf("Child process %d has finished\n", pid);
-    split--;
+    wk_num--;
 
   }
 
