@@ -120,8 +120,24 @@ int main(int argc, char **argv) {
 	}
 
 	//Get file length.
-	fseek(fp, 0, SEEK_END);
+	fseek(fp, -1, SEEK_END);
 	long int size = ftell(fp);
+	fclose(fp);
+
+	if (parts > size) {
+		parts = size;
+		answer = '0';
+
+		printf("There are only %ld characters in given file %s, so this file can only be compressed into %ld parts. Continue? (y/n)\n");
+		while (answer != 'y' && answer != 'Y') {
+			fscanf(stdin, "%c", &answer);
+
+			if (answer == 'n' || answer == 'N') {
+				printf("The compression process will not continue. Exiting.\n");
+				return 0;
+			} else if (answer != 'y' && answer != 'Y') printf("Valid responses are Y/y (yes) or N/n (no). Try again:\n");
+		}
+	}
 
 	long int begin = 0;
 	long int end = size/parts;
