@@ -98,7 +98,7 @@ int main(int argc, char **argv) {
 	//Create strings for output file names.
 	char out[strlen(argv[1]) + 10];
 	char fileName[strlen(argv[1]) + 6];
-	sprintf(fileName, %s,_LOLS, argv[1]);
+	sprintf(fileName, "%s,_LOLS", argv[1]);
 	fileName[strlen(argv[1]) - 4] = '_';
 
 	if (parts > 1) sprintf(out, "%s%d", fileName, 0);
@@ -144,7 +144,6 @@ int main(int argc, char **argv) {
 	long int temp;
 	pthread_t pthreads[parts];
 	int threadNumber = 0;
-	char c = '0';
 	compressorArguments args = NULL;
 	
 	int roundup = size - end * parts;
@@ -157,13 +156,6 @@ int main(int argc, char **argv) {
 	//If pthread_create doesn't return 0, gracefully exit the program and report we were unable to finish.
 	while(begin < size) {
 		fseek(fp, end - 1, SEEK_SET);
-
-		c = fgetc(fp);
-		while (fgetc(fp) == c && c != EOF) end++;
-
-		if (c == EOF) break;
-		
-		if (threadNumber == parts - 1) end = size;
 
 		if (parts > 1) sprintf(out, "%s%d", fileName, threadNumber);
 
@@ -189,8 +181,6 @@ int main(int argc, char **argv) {
 
 	//Check if for some reason we couldn't compress to the desired number of parts and report if this happened.
 	if (threadNumber != parts) printf("Unfortunately, the given file %s could only be compressed into %d parts, instead of the requested number (%d).\n", argv[1], threadNumber. parts);
-
-	fclose(fp);
 
 	//Join the various threads to this thread and hold for termination.
 	while (threadNumber >= 0) {
