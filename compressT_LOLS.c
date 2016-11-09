@@ -177,6 +177,7 @@ int main(int argc, char **argv) {
 
 		threadNumber++;
 		free(args);
+		args = NULL;
 	}	
 
 	//Check if for some reason we couldn't compress to the desired number of parts and report if this happened.
