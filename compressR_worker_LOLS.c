@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 
 
@@ -15,46 +16,53 @@ int main(int argc, char ** argv) {
 
 
   char c = getc(rd);  // holds the next character
+  while (!isalpha(c)) { c = getc(rd); }  // make sure c is a valid character
+  int bad_section = (ftell(rd) > end)? 1 : 0; // flag if there are no valid characters
   char val = c;       // holds the value of previous character
   int num = 1;        // holds the number of times val has occured in sequence
 
 
   // while the index of the reading pointer is within the portion to be compressed
-  do {
-    //read next character
-    c = fgetc(rd);
+  if (!bad_section) {
+    do {
+      //read next character
+      c = fgetc(rd);
 
-    // if we have reached the end of the section, signal to end and write current values
-    if (ftell(rd) > end) { c = EOF; }
+      // if the character is not alphabetic, ignore it
+      if (!isalpha(c)) { continue; }
 
-    // if the current val is the same as the previous, increment and continue
-    if (c == val) { num++; }
+      // if we have reached the end of the section, signal to end and write current values
+      if (ftell(rd) > end) { c = EOF; }
 
-    // otherwise, write num and val to the compressed file then reset them
-    else {  
+      // if the current val is the same as the previous, increment and continue
+      if (c == val) { num++; }
 
-      if (num == 1) {
+      // otherwise, write num and val to the compressed file then reset them
+      else {  
 
-	fputc(val, wr);
+	if (num == 1) {
 
-      } else if (num == 2) {
+	  fputc(val, wr);
 
-	fputc(val, wr);
-	fputc(val, wr);
+	} else if (num == 2) {
 
-      } else {
+	  fputc(val, wr);
+	  fputc(val, wr);
 
-	fprintf(wr, "%d", num);
-	fputc(val, wr);
+	} else {
+
+	  fprintf(wr, "%d", num);
+	  fputc(val, wr);
+
+	}
+
+	num = 1;
+	val = c;
 
       }
 
-      num = 1;
-      val = c;
-
-    }
-
-  } while (c != EOF);
+    } while (c != EOF);
+  }
 
   fclose(rd);
   fclose(wr);
