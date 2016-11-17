@@ -131,143 +131,121 @@ int main(int argc, char ** argv) {
   fclose(fp);
 
   int t_total_R = 0;
+  //int t_total_T = 0;
 
   struct timeval start, end;
 
+  gettimeofday(&start, NULL);
   for (i = 0; i < 100; i++) {
-    gettimeofday(&start, NULL);
     compressR_LOLS("200bytes.txt", "2");
-    gettimeofday(&end, NULL);
-    t_total_R += end.tv_sec - start.tv_sec;
-
   }
+  gettimeofday(&end, NULL);
+  t_total_R = end.tv_sec - start.tv_sec;
 
   printf("\n\nAverage Times:  compressR_LOLS vs. compressT_LOLS\n________________________________________________\n");
-  printf("Compressing a 200 byte file into\n\t2 files: %f\n", 1.0*t_total_R/100);
+  printf("Compressing a 200 byte file into\n\t2 files: %f\n", 0.01*t_total_R);
 
-  t_total_R = 0;
+  gettimeofday(&start, NULL);
   for (i = 0; i < 100; i++) {
-    gettimeofday(&start, NULL);
     compressR_LOLS("200bytes.txt", "4");
-    gettimeofday(&end, NULL);
-    t_total_R += end.tv_sec - start.tv_sec;
-
   }
+  gettimeofday(&end, NULL);
+  t_total_R = end.tv_sec - start.tv_sec;
 
-  printf("\t4 files: %f\n", 1.0*t_total_R/100);
+  printf("\t4 files: %f\n", 0.01*t_total_R);
 
-  t_total_R = 0;
+  gettimeofday(&start, NULL);
   for (i = 0; i < 100; i++) {
-    gettimeofday(&start, NULL);
     compressR_LOLS("200bytes.txt", "8");
-    gettimeofday(&end, NULL);
-    t_total_R += end.tv_sec - start.tv_sec;
-
   }
+  gettimeofday(&end, NULL);
+  t_total_R = end.tv_sec - start.tv_sec;
 
-  printf("\t8 files: %f\n", 1.0*t_total_R/100);
+  printf("\t8 files: %f\n", 0.01*t_total_R);
   printf("Compressing a 3200 byte file into\n");
 
-  t_total_R = 0;
+  gettimeofday(&start, NULL);
   for (i = 0; i < 100; i++) {
-    gettimeofday(&start, NULL);
     compressR_LOLS("3200bytes.txt", "2");
-    gettimeofday(&end, NULL);
-    t_total_R += end.tv_sec - start.tv_sec;
-
   }
+  gettimeofday(&end, NULL);
+  t_total_R = end.tv_sec - start.tv_sec;
 
-  printf("\t2 files: %f\n", 1.0*t_total_R/100);
+  printf("\t2 files: %f\n", 0.01*t_total_R);
 
-  t_total_R = 0;
+  gettimeofday(&start, NULL);
   for (i = 0; i < 100; i++) {
-    gettimeofday(&start, NULL);
     compressR_LOLS("3200bytes.txt", "4");
-    gettimeofday(&end, NULL);
-    t_total_R += end.tv_sec - start.tv_sec;
-
   }
+  gettimeofday(&end, NULL);
+  t_total_R = end.tv_sec - start.tv_sec;
 
-  printf("\t4 files: %f\n", 1.0*t_total_R/100);
+  printf("\t4 files: %f\n", 0.01*t_total_R);
 
-  t_total_R = 0;
+  gettimeofday(&start, NULL);
   for (i = 0; i < 100; i++) {
-    gettimeofday(&start, NULL);
     compressR_LOLS("3200bytes.txt", "8");
-    gettimeofday(&end, NULL);
-    t_total_R += end.tv_sec - start.tv_sec;
-
   }
+  gettimeofday(&end, NULL);
+  t_total_R = end.tv_sec - start.tv_sec;
 
-  printf("\t8 files: %f\n", 1.0*t_total_R/100);
+  printf("\t8 files: %f\n", 0.01*t_total_R);
   printf("Compressing a 12800 byte file into\n");
 
-  t_total_R = 0;
+  gettimeofday(&start, NULL);
   for (i = 0; i < 100; i++) {
-    gettimeofday(&start, NULL);
     compressR_LOLS("12800bytes.txt", "2");
-    gettimeofday(&end, NULL);
-    t_total_R += end.tv_sec - start.tv_sec;
-
   }
+  gettimeofday(&end, NULL);
+  t_total_R = end.tv_sec - start.tv_sec;
 
-  printf("\t2 files: %f\n", 1.0*t_total_R/100);
+  printf("\t2 files: %f\n", 0.01*t_total_R);
 
-  t_total_R = 0;
+  gettimeofday(&start, NULL);
   for (i = 0; i < 100; i++) {
-    gettimeofday(&start, NULL);
     compressR_LOLS("12800bytes.txt", "4");
-    gettimeofday(&end, NULL);
-    t_total_R += end.tv_sec - start.tv_sec;
-
   }
+  gettimeofday(&end, NULL);
+  t_total_R = end.tv_sec - start.tv_sec;
 
-  printf("\t4 files: %f\n", 1.0*t_total_R/100);
+  printf("\t4 files: %f\n", 0.01*t_total_R);
 
-  t_total_R = 0;
+  gettimeofday(&start, NULL);
   for (i = 0; i < 100; i++) {
-    gettimeofday(&start, NULL);
     compressR_LOLS("12800bytes.txt", "8");
-    gettimeofday(&end, NULL);
-    t_total_R += end.tv_sec - start.tv_sec;
-
   }
+  gettimeofday(&end, NULL);
+  t_total_R = end.tv_sec - start.tv_sec;
 
-  printf("\t8 files: %f\n", 1.0*t_total_R/100);
+  printf("\t8 files: %f\n", 0.01*t_total_R);
   printf("Compressing a 102400 byte file into\n");
 
-  t_total_R = 0;
+  gettimeofday(&start, NULL);
   for (i = 0; i < 100; i++) {
-    gettimeofday(&start, NULL);
     compressR_LOLS("102400bytes.txt", "2");
-    gettimeofday(&end, NULL);
-    t_total_R += end.tv_sec - start.tv_sec;
-
   }
+  gettimeofday(&end, NULL);
+  t_total_R = end.tv_sec - start.tv_sec;
 
-  printf("\t2 files: %f\n", 1.0*t_total_R/100);
+  printf("\t2 files: %f\n", 0.01*t_total_R);
 
-  t_total_R = 0;
+  gettimeofday(&start, NULL);
   for (i = 0; i < 100; i++) {
-    gettimeofday(&start, NULL);
     compressR_LOLS("102400bytes.txt", "4");
-    gettimeofday(&end, NULL);
-    t_total_R += end.tv_sec - start.tv_sec;
-
   }
+  gettimeofday(&end, NULL);
+  t_total_R = end.tv_sec - start.tv_sec;
 
-  printf("\t4 files: %f\n", 1.0*t_total_R/100);
+  printf("\t4 files: %f\n", 0.01*t_total_R);
 
-  t_total_R = 0;
+  gettimeofday(&start, NULL);
   for (i = 0; i < 100; i++) {
-    gettimeofday(&start, NULL);
     compressR_LOLS("102400bytes.txt", "8");
-    gettimeofday(&end, NULL);
-    t_total_R += end.tv_sec - start.tv_sec;
-
   }
+  gettimeofday(&end, NULL);
+  t_total_R = end.tv_sec - start.tv_sec;
 
-  printf("\t8 files: %f\n\n\n", 1.0*t_total_R/100);
+  printf("\t8 files: %f\n\n\n", 0.01*t_total_R);
 
 
 
