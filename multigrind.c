@@ -272,40 +272,48 @@ int main(int argc, char ** argv) {
 	  compressR_LOLS("200bytes.txt", "1");
 	  gettimeofday(&end, NULL);
 	  R_total_1 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_1 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("200bytes.txt", "1");
 	  gettimeofday(&end, NULL);
+	  T_total_1 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_1 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressR_LOLS("200bytes.txt", "2");
 	  gettimeofday(&end, NULL);
 	  R_total_2 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_2 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("200bytes.txt", "2");
 	  gettimeofday(&end, NULL);
+	  T_total_2 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_2 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressR_LOLS("200bytes.txt", "4");
 	  gettimeofday(&end, NULL);
 	  R_total_4 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_4 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("200bytes.txt", "4");
 	  gettimeofday(&end, NULL);
+	  T_total_4 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_4 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressR_LOLS("200bytes.txt", "8");
 	  gettimeofday(&end, NULL);
 	  R_total_8 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_8 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("200bytes.txt", "8");
 	  gettimeofday(&end, NULL);
+	  T_total_8 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_8 += 1.0E-6*(end.tv_usec - start.tv_usec); 
   }
 
@@ -319,6 +327,10 @@ int main(int argc, char ** argv) {
   R_total_2 = 0;
   R_total_4 = 0;
   R_total_8 = 0;
+  T_total_1 = 0;
+  T_total_2 = 0;
+  T_total_4 = 0;
+  T_total_8 = 0;
 
   for (i = 0; i < 100; i++) {
 	  fp = fopen("3200bytes.txt", "w");
@@ -332,40 +344,48 @@ int main(int argc, char ** argv) {
 	  compressR_LOLS("3200bytes.txt", "1");
 	  gettimeofday(&end, NULL);
 	  R_total_1 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_1 += 1.0E-6*(end.tv_usec - start.tv_usec);
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("3200bytes.txt", "1");
 	  gettimeofday(&end, NULL);
+	  T_total_1 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_1 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressR_LOLS("3200bytes.txt", "2");
 	  gettimeofday(&end, NULL);
 	  R_total_2 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_2 += 1.0E-6*(end.tv_usec - start.tv_usec);
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("3200bytes.txt", "2");
 	  gettimeofday(&end, NULL);
+	  T_total_2 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_2 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressR_LOLS("3200bytes.txt", "4");
 	  gettimeofday(&end, NULL);
-	  T_total_4 += 1.0E-6*(end.tv_usec - start.tv_usec);
+	  R_total_4 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_4 += 1.0E-6*(end.tv_usec - start.tv_usec);
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("3200bytes.txt", "4");
 	  gettimeofday(&end, NULL);
+	  T_total_4 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_4 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressR_LOLS("3200bytes.txt", "8");
 	  gettimeofday(&end, NULL);
 	  R_total_8 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_8 += 1.0E-6*(end.tv_usec - start.tv_usec);
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("3200bytes.txt", "8");
 	  gettimeofday(&end, NULL);
+	  T_total_8 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_8 += 1.0E-6*(end.tv_usec - start.tv_usec); 
   }
 
@@ -379,6 +399,10 @@ int main(int argc, char ** argv) {
   R_total_2 = 0;
   R_total_4 = 0;
   R_total_8 = 0;
+  T_total_1 = 0;
+  T_total_2 = 0;
+  T_total_4 = 0;
+  T_total_8 = 0;
 
   for (i = 0; i < 100; i++) {
 	  fp = fopen("12800bytes.txt", "w");
@@ -392,40 +416,48 @@ int main(int argc, char ** argv) {
 	  compressR_LOLS("12800bytes.txt", "1");
 	  gettimeofday(&end, NULL);
 	  R_total_1 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_1 += 1.0E-6*(end.tv_usec - start.tv_usec);
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("12800bytes.txt", "1");
 	  gettimeofday(&end, NULL);
+	  T_total_1 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_1 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressR_LOLS("12800bytes.txt", "2");
 	  gettimeofday(&end, NULL);
-	  R_total_2 += 1.0*(end.tv_sec - start.tv_sec);
+	  T_total_2 += 1.0*(end.tv_sec - start.tv_sec);
+	  T_total_2 += 1.0E-6*(end.tv_usec - start.tv_usec);
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("12800bytes.txt", "2");
 	  gettimeofday(&end, NULL);
+	  T_total_2 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_2 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressR_LOLS("12800bytes.txt", "4");
 	  gettimeofday(&end, NULL);
-	  R_total_4 += 1.0*(end.tv_sec - start.tv_sec);
+	  T_total_4 += 1.0*(end.tv_sec - start.tv_sec);
+	  T_total_4 += 1.0E-6*(end.tv_usec - start.tv_usec);
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("12800bytes.txt", "4");
 	  gettimeofday(&end, NULL);
+	  T_total_4 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_4 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressR_LOLS("12800bytes.txt", "8");
 	  gettimeofday(&end, NULL);
 	  R_total_8 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_8 += 1.0E-6*(end.tv_usec - start.tv_usec);
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("12800bytes.txt", "8");
 	  gettimeofday(&end, NULL);
+	  T_total_8 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_8 += 1.0E-6*(end.tv_usec - start.tv_usec); 
   }
 
@@ -439,6 +471,10 @@ int main(int argc, char ** argv) {
   R_total_2 = 0;
   R_total_4 = 0;
   R_total_8 = 0;
+  T_total_1 = 0;
+  T_total_2 = 0;
+  T_total_4 = 0;
+  T_total_8 = 0;
 
   for (i = 0; i < 100; i++) {
 	  fp = fopen("102400bytes.txt", "w");
@@ -452,40 +488,48 @@ int main(int argc, char ** argv) {
 	  compressR_LOLS("102400bytes.txt", "1");
 	  gettimeofday(&end, NULL);
 	  R_total_1 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_1 += 1.0E-6*(end.tv_usec - start.tv_usec);
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("102400bytes.txt", "1");
 	  gettimeofday(&end, NULL);
+	  T_total_1 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_1 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressR_LOLS("102400bytes.txt", "2");
 	  gettimeofday(&end, NULL);
 	  R_total_2 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_2 += 1.0E-6*(end.tv_usec - start.tv_usec);
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("102400bytes.txt", "2");
 	  gettimeofday(&end, NULL);
+	  T_total_2 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_2 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressR_LOLS("102400bytes.txt", "4");
 	  gettimeofday(&end, NULL);
 	  R_total_4 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_4 += 1.0E-6*(end.tv_usec - start.tv_usec);
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("102400bytes.txt", "4");
 	  gettimeofday(&end, NULL);
+	  T_total_4 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_4 += 1.0E-6*(end.tv_usec - start.tv_usec); 
 
 	  gettimeofday(&start, NULL);
 	  compressR_LOLS("102400bytes.txt", "8");
 	  gettimeofday(&end, NULL);
 	  R_total_8 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_8 += 1.0E-6*(end.tv_usec - start.tv_usec);
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("102400bytes.txt", "8");
 	  gettimeofday(&end, NULL);
+	  T_total_8 += 1.0*(end.tv_sec - start.tv_sec);
 	  T_total_8 += 1.0E-6*(end.tv_usec - start.tv_usec); 
   }
 
@@ -493,6 +537,6 @@ int main(int argc, char ** argv) {
   printf("\t2 files: %f/%f\n", 0.01*R_total_2, T_total_2);
   printf("\t4 files: %f/%f\n", 0.01*R_total_4, T_total_4);
   printf("\t8 files: %f/%f\n", 0.01*R_total_8, T_total_8);
-
+ 
   return 0;
 }
