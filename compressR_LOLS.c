@@ -6,32 +6,26 @@
 #include <sys/wait.h>
 
 
-int main(int argc, char ** argv) {
 
-  // check for proper number of arguments
-  if (argc < 3) {
-    fprintf(stderr, "ERROR: Not enough arguments\n"); 
-    return -1;
-  }
+void compressR_LOLS(char * file, int split) {
 
   // open target file
-  FILE * fp = fopen(argv[1], "r");
+  FILE * fp = fopen(file, "r");
   if (!fp) { 
     perror("ERROR ");
-    return -1;
+    return;
   }
 
-  int split = atoi(argv[2]);   // number of child processes to make
   if (split < 1) { 
-    fprintf(stderr, "ERROR: argv[1] must be at least 1\n");
-    return -1;
+    fprintf(stderr, "ERROR:  cannot generate less than 1 file\n");
+    return;
   }
   
   // char out[] will be the name of the compressed files
-  char out[strlen(argv[1]) + 10];
-  char file_name[strlen(argv[1]) + 6];
-  sprintf(file_name, "%s_LOLS", argv[1]);
-  file_name[strlen(argv[1]) - 4] = '_';
+  char out[strlen(file) + 10];
+  char file_name[strlen(file) + 6];
+  sprintf(file_name, "%s_LOLS", file);
+  file_name[strlen(file) - 4] = '_';
 
   if (split > 1) {
     sprintf(out,"%s%d", file_name, 0);
@@ -49,7 +43,7 @@ int main(int argc, char ** argv) {
       fscanf(stdin, "%c", &answer);
 
       if (answer == 'n') {
-	return 0;
+	return;
       }
     }
   }
@@ -63,11 +57,11 @@ int main(int argc, char ** argv) {
   if (split > size) {
     split = size;
     answer = 0;
-    printf("There are only %ld characters in %s, so only %ld files will be made.  Do you wish to continue? (y/n): ", size, argv[1], size);
+    printf("There are only %ld characters in %s, so only %ld files will be made.  Do you wish to continue? (y/n): ", size, file, size);
     while(answer != 'y') {
       fscanf(stdin, "%c", &answer);
       if (answer == 'n') {
-	return 0;
+	return;
       }
     }
   }
@@ -95,10 +89,10 @@ int main(int argc, char ** argv) {
     if (!workers[wk_num]) {
       sprintf(bg, "%ld", begin);
       sprintf(nd, "%ld", end);
-      execl("./compressR_worker_LOLS", "./compressR_worker_LOLS", argv[1], out, bg, nd, (char*)0);
+      execl("./compressR_worker_LOLS", "./compressR_worker_LOLS", file, out, bg, nd, (char*)0);
 
       fprintf(stderr, "ERROR: Worker %d failed to exec\n", wk_num);
-      return -1;
+      return;
     }
 
     temp = end;
@@ -114,11 +108,26 @@ int main(int argc, char ** argv) {
   int status;
   pid_t pid;
   while (wk_num) {
-    pid =  wait(&status);
-    printf("Child process %d has finished\n", pid);
+    pid = wait(&status);
+    if (status) {
+      printf("Child process %d exited with status: %d", pid, status);
+    }
     wk_num--;
-
   }
+
+}
+
+
+
+int main(int argc, char ** argv) {
+
+  // check for proper number of arguments
+  if (argc < 3) {
+    fprintf(stderr, "ERROR: Not enough arguments\n"); 
+    return -1;
+  }
+
+  compressR_LOLS(argv[1], atoi(argv[2]));
 
   return 0;
 
