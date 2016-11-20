@@ -98,7 +98,7 @@ void compressT_LOLS(char *src, char *partsArg) {
 	int parts = atoi(partsArg);
 
 	//Create strings for output file names.
-	char out[strlen(src + 10)];
+	char out[strlen(src) + 10];
 	char fileName[strlen(src) + 6];
 	sprintf(fileName, "%s_LOLS", src);
 	fileName[strlen(src) - 4] = '_';
