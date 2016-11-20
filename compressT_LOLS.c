@@ -9,7 +9,7 @@
  * Struct used to pass multiple arguments to the compressor thread.
  * Has fields for the begin and end index of compression as well as the source and dest files.
  */
-struct compressorArguments {
+typedef struct compressorArguments {
 	int beginIndex;
 	int endIndex;
 	char *src;
