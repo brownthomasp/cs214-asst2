@@ -389,10 +389,10 @@ int main(int argc, char ** argv) {
 	  T_total_8 += 1.0E-6*(end.tv_usec - start.tv_usec); 
   }
 
-  printf("\t1 files: %f/%f\n", 0.01*R_total_1, T_total_1);
-  printf("\t2 files: %f/%f\n", 0.01*R_total_2, T_total_2);
-  printf("\t4 files: %f/%f\n", 0.01*R_total_4, T_total_4);
-  printf("\t8 files: %f/%f\n", 0.01*R_total_8, T_total_8);
+  printf("\t1 files: %f/%f\n", 0.01*R_total_1, 0.01*T_total_1);
+  printf("\t2 files: %f/%f\n", 0.01*R_total_2, 0.01*T_total_2);
+  printf("\t4 files: %f/%f\n", 0.01*R_total_4, 0.01*T_total_4);
+  printf("\t8 files: %f/%f\n", 0.01*R_total_8, 0.01*T_total_8);
   printf("Compressing a 12800 byte file into\n");
 
   R_total_1 = 0;
@@ -427,8 +427,8 @@ int main(int argc, char ** argv) {
 	  gettimeofday(&start, NULL);
 	  compressR_LOLS("12800bytes.txt", "2");
 	  gettimeofday(&end, NULL);
-	  T_total_2 += 1.0*(end.tv_sec - start.tv_sec);
-	  T_total_2 += 1.0E-6*(end.tv_usec - start.tv_usec);
+	  R_total_2 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_2 += 1.0E-6*(end.tv_usec - start.tv_usec);
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("12800bytes.txt", "2");
@@ -439,8 +439,8 @@ int main(int argc, char ** argv) {
 	  gettimeofday(&start, NULL);
 	  compressR_LOLS("12800bytes.txt", "4");
 	  gettimeofday(&end, NULL);
-	  T_total_4 += 1.0*(end.tv_sec - start.tv_sec);
-	  T_total_4 += 1.0E-6*(end.tv_usec - start.tv_usec);
+	  R_total_4 += 1.0*(end.tv_sec - start.tv_sec);
+	  R_total_4 += 1.0E-6*(end.tv_usec - start.tv_usec);
 
 	  gettimeofday(&start, NULL);
 	  compressT_LOLS("12800bytes.txt", "4");
@@ -461,10 +461,10 @@ int main(int argc, char ** argv) {
 	  T_total_8 += 1.0E-6*(end.tv_usec - start.tv_usec); 
   }
 
-  printf("\t1 files: %f/%f\n", 0.01*R_total_1, T_total_1);
-  printf("\t2 files: %f/%f\n", 0.01*R_total_2, T_total_2);
-  printf("\t4 files: %f/%f\n", 0.01*R_total_4, T_total_4);
-  printf("\t8 files: %f/%f\n", 0.01*R_total_8, T_total_8);
+  printf("\t1 files: %f/%f\n", 0.01*R_total_1, 0.01*T_total_1);
+  printf("\t2 files: %f/%f\n", 0.01*R_total_2, 0.01*T_total_2);
+  printf("\t4 files: %f/%f\n", 0.01*R_total_4, 0.01*T_total_4);
+  printf("\t8 files: %f/%f\n", 0.01*R_total_8, 0.01*T_total_8);
   printf("Compressing a 102400 byte file into\n");
 
   R_total_1 = 0;
@@ -533,10 +533,10 @@ int main(int argc, char ** argv) {
 	  T_total_8 += 1.0E-6*(end.tv_usec - start.tv_usec); 
   }
 
-  printf("\t1 files: %f/%f\n", 0.01*R_total_1, T_total_1);
-  printf("\t2 files: %f/%f\n", 0.01*R_total_2, T_total_2);
-  printf("\t4 files: %f/%f\n", 0.01*R_total_4, T_total_4);
-  printf("\t8 files: %f/%f\n", 0.01*R_total_8, T_total_8);
+  printf("\t1 files: %f/%f\n", 0.01*R_total_1, 0.01*T_total_1);
+  printf("\t2 files: %f/%f\n", 0.01*R_total_2, 0.01*T_total_2);
+  printf("\t4 files: %f/%f\n", 0.01*R_total_4, 0.01*T_total_4);
+  printf("\t8 files: %f/%f\n", 0.01*R_total_8, 0.01*T_total_8);
  
   return 0;
 }
