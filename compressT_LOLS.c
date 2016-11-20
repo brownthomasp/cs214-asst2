@@ -1,3 +1,4 @@
+#include <ctype.h>
 #include <errno.h>
 #include <pthread.h>
 #include <stdio.h>
@@ -32,7 +33,9 @@ compressorArguments* setArguments(int beginIndex, int endIndex, char *src, char 
 /*
  * Compresses a portion of a file via LOLS (length of long sequence) and exits its thread.
  */
-void* compress(compressorArguments *args) {
+void* compress(void *argsVoidPtr) {
+	compressorArguments *args = (compressorArguments *)argsVoidPtr;
+	
 	FILE *src = fopen(args->src, "r"),
              *dest = fopen(args->dest, "w"); 
 
@@ -45,6 +48,8 @@ void* compress(compressorArguments *args) {
  	//Do compression logic.
 	do {
 		thisChar = fgetc(src);
+		
+		if (!isalpha(thisChar)) continue;
 		
 		//If we're past end index, we hit EOF (for this thread).
 		//If this is the same char as the last, it's a sequence and we need to advance to the next char to know what to do.
@@ -76,30 +81,23 @@ void* compress(compressorArguments *args) {
 	pthread_exit(0);
 }
 
-int main(int argc, char **argv) {
-	
-	if (argc != 3) {
-		fprintf(stderr, "ERROR: incorrect number of arguments given (%d), expected 2.\n", argc - 1);
-		return -1;	
-	}
-
-	FILE *fp = fopen(argv[1], "r");
+void compressT_LOLS(char *src, int parts) {
+	FILE *fp = fopen(src, "r");
 	if (fp == NULL) {
 		perror("ERROR");
-		return -2;	
+		return;
 	}
-
-	int parts = atoi(argv[2]);
+	
 	if (parts < 1) {
 		fprintf(stderr, "ERROR: number of parts specified must be at least 1.\n");
-		return -3;
+		return;
 	}
 
 	//Create strings for output file names.
-	char out[strlen(argv[1]) + 10];
-	char fileName[strlen(argv[1]) + 6];
-	sprintf(fileName, "%s,_LOLS", argv[1]);
-	fileName[strlen(argv[1]) - 4] = '_';
+	char out[strlen(src) + 10];
+	char fileName[strlen(src) + 6];
+	sprintf(fileName, "%s_LOLS", src);
+	fileName[strlen(src) - 4] = '_';
 
 	if (parts > 1) sprintf(out, "%s%d", fileName, 0);
 	else sprintf(out, "%s", fileName);
@@ -114,7 +112,7 @@ int main(int argc, char **argv) {
 
 			if (answer == 'n' || answer == 'N') {
 				printf("The file will not be overwritten. Exiting.\n");
-				return 0;
+				return;
 			} else if (answer != 'y' && answer != 'Y') printf("Valid responses are Y/y (yes) or N/n (no). Try again:\n");
 		}
 	}
@@ -143,8 +141,8 @@ int main(int argc, char **argv) {
 	long int end = size/parts;
 	long int temp;
 	pthread_t pthreads[parts];
-	int threadNumber = 0;
-	compressorArguments args = NULL;
+	int threadNumber = -1;
+	compressorArguments *args = NULL;
 	
 	int roundup = size - end * parts;
 	if (roundup != 0) {
@@ -155,15 +153,15 @@ int main(int argc, char **argv) {
 	//While pieces left, break the file down into several pieces and then spawn a thread to handle each piece.
 	//If pthread_create doesn't return 0, gracefully exit the program and report we were unable to finish.
 	while(begin < size) {
-		fseek(fp, end - 1, SEEK_SET);
+		threadNumber++;
 
 		if (parts > 1) sprintf(out, "%s%d", fileName, threadNumber);
 
-		args = setArguments(begin, end, argv[1], out);
+		args = setArguments(begin, end, src, out);
 
-		if (pthread_create(&pthreads[threadNumber], NULL, compress, (void*) args) !=  0) {
+		if (pthread_create(&pthreads[threadNumber], NULL, &compress, (void *)args) !=  0) {
 			fprintf(stderr, "ERROR: unable to create new worker thread #%d to perform compression.\n", threadNumber);
-			return -4;
+			return;
 		}
 
 		temp = end;
@@ -175,21 +173,30 @@ int main(int argc, char **argv) {
 			roundup--;
 		}
 
-		threadNumber++;
 		free(args);
 		args = NULL;
 	}	
 
 	//Check if for some reason we couldn't compress to the desired number of parts and report if this happened.
-	if (threadNumber != parts) printf("Unfortunately, the given file %s could only be compressed into %d parts, instead of the requested number (%d).\n", argv[1], threadNumber. parts);
+	if ((threadNumber + 1) != parts) printf("Unfortunately, the given file %s could only be compressed into %d parts, instead of the requested number (%d).\n", src, threadNumber, parts);
 
 	//Join the various threads to this thread and hold for termination.
 	while (threadNumber >= 0) {
-		if (pthread_join(pthreads[threadNumber], NULL) != 0) fprintf(stderr, "ERROR: unable to join worker thread #%d.\n", threadNumber);
-		else printf("Worker thread #%d successfully completed.\n", threadNumber);
-
-		threadNumber++;		
+		pthread_join(pthreads[threadNumber], NULL);
+		threadNumber-;
 	}
 		
+	return;
+}
+
+int main(int argc, char **argv) {
+	
+	if (argc != 3) {
+		fprintf(stderr, "ERROR: incorrect number of arguments given (%d), expected 2.\n", argc - 1);
+		return -1;	
+	}
+	
+	compressT_LOLS(argv[1], atoi(argv[2]));
+
 	return 0;
 }
